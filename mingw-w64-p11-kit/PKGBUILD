@@ -36,7 +36,8 @@ source=(https://github.com/p11-glue/p11-kit/releases/download/${pkgver}/${_realn
         0011-p11-kit-spawn-external.patch
         0012-no-version-script.patch
         0013-fix-reallocarray-decl.patch
-        0014-meson-build.patch)
+        0014-meson-build.patch
+        0016-spaces-in-path-names.patch)
 validpgpkeys=('C0F67099B808FB063E2C81117BFB1108D92765AF'
               '462225C3B46F34879FC8496CD605848ED7E69871')
 sha256sums=('d8be783efd5cd4ae534cee4132338e3f40f182c3205d23b200094ec85faaaef8'
@@ -54,7 +55,8 @@ sha256sums=('d8be783efd5cd4ae534cee4132338e3f40f182c3205d23b200094ec85faaaef8'
             '3c4821c36f76fd45c0d1ec83474773e45ccefde4ac92ca88b8493425f7553cb9'
             '15a2729f39e260f7fe8d55a91a399f2512854da626a69bc215470f902fc178cd'
             '83ecf11aaf9a1c6f617790048e80febd7320edae6ba203958349264170956911'
-            'c04a384a6bc7e05098ee67d76cc4aecc9004eed2366b4ce9097428309b1581b6')
+            'c04a384a6bc7e05098ee67d76cc4aecc9004eed2366b4ce9097428309b1581b6'
+            'd73ef8e70c11bd7c8d8a547c4ec89b893565c25d38480938115eaefedbbeccf3')
 
 prepare() {
   test ! -d "${startdir}/../mingw-w64-pathtools" || {
@@ -77,6 +79,7 @@ prepare() {
   patch -p1 -i ${srcdir}/0012-no-version-script.patch
   patch -p1 -i ${srcdir}/0013-fix-reallocarray-decl.patch
   patch -p1 -i ${srcdir}/0014-meson-build.patch
+  patch -p1 -i ${srcdir}/0016-spaces-in-path-names.patch
 
   autoreconf -vfi
   gtkdocize
