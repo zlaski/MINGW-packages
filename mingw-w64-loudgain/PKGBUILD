@@ -1,0 +1,44 @@
+# Maintainer: Ziemowit Laski <ziemowit.laski@gmail.com>
+
+_realname=loudgain
+pkgbase=mingw-w64-${_realname}
+pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}"
+epoch=1
+pkgver=0.6.8
+pkgrel=1
+pkgdesc="Audio loudness normalizer per the EBU R128/ITU BS.1770 standard (mingw-w64)"
+arch=('any')
+mingw_arch=('mingw32' 'mingw64' 'ucrt64' 'clang64' 'clang32' 'clangarm64')
+license=('BSD-2-Clause')
+url="https://github.com/Moonbase59/loudgain"
+depends=("${MINGW_PACKAGE_PREFIX}-ffmpeg"
+         "${MINGW_PACKAGE_PREFIX}-libebur128"
+         "${MINGW_PACKAGE_PREFIX}-taglib")
+makedepends=("${MINGW_PACKAGE_PREFIX}-gcc")
+
+options=('staticlibs' '!strip' 'debug')
+source=("https://github.com/Moonbase59/loudgain/archive/refs/tags/v${pkgver}.tar.gz"
+        "0002-disable-syslog-pty-ioctl.patch")
+sha256sums=('1137c193ad941b366e87c5d84ccc95a7aa8571affc060db0bd1cf72c489aeaee'
+            'e98dd8a12ebf052b7cb7355dc7a16f83515ddf678ead5efe880746954833529c')
+
+prepare() {
+  cd "${srcdir}/${_realname}-${pkgver}"
+
+  patch -p1 -i "${srcdir}/0002-disable-syslog-pty-ioctl.patch"
+  
+}
+
+build() {
+  cd "${srcdir}"
+  [[ -d build${MINGW_PREFIX} ]] && rm -rf build${MINGW_PREFIX}
+  mkdir -p build${MINGW_PREFIX} && cd build${MINGW_PREFIX}
+  
+  cmake -G "MSYS Makefiles" --install-prefix="${MINGW_PREFIX}" ../../${_realname}-${pkgver}
+  make
+}
+
+package() {
+  cd "${srcdir}/build${MINGW_PREFIX}"
+  make install
+}

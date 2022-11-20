@@ -1,0 +1,38 @@
+--- loudgain-0.6.8/src/printf.c.orig	2019-09-06 15:31:19.000000000 +0000
++++ loudgain-0.6.8/src/printf.c	2022-11-22 04:00:57.908545800 +0000
+@@ -34,11 +34,21 @@
+ #include <stdarg.h>
+ #include <string.h>
+ #include <unistd.h>
++
++#ifndef __MINGW32__
+ #include <syslog.h>
++#else
++#define vsyslog(...)
++#define LINE_MAX 256
++#endif // #ifndef __MINGW32__
++
+ #include <limits.h>
+ 
+ // Mac OS X has no pty.h, so use util.h instead
+ #include "config.h"
++
++#ifndef __MINGW32__
++
+ #ifdef HAVE_PTY_H
+ 	#include <pty.h>
+ #else
+@@ -47,6 +57,13 @@
+ 
+ #include <sys/ioctl.h>
+ 
++#else // #ifndef __MINGW32__
++    
++#define ioctl(...) -1
++struct winsize { unsigned ws_row, ws_col; };
++
++#endif // #ifndef __MINGW32__
++
+ #include "lg-util.h"
+ 
+ int use_syslog = 0;

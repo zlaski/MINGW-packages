@@ -50,9 +50,13 @@ build() {
     ../${_realname}-${pkgver}
 
   meson compile
+  echo srcdir=${srcdir}
+  echo pkgdir=${pkgdir}
 }
 
 package() {
+  echo srcdir=${srcdir}
+  echo pkgdir=${pkgdir}
   cd ${srcdir}/build-${MINGW_CHOST}
 
   DESTDIR="${pkgdir}" meson install
