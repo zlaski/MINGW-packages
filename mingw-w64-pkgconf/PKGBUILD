@@ -6,24 +6,26 @@ pkgbase=mingw-w64-${_realname}
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}"
 epoch=1
 pkgver=1.9.3
-pkgrel=1
-pkgdesc='pkg-config compatible utility which does not depend on glib'
+pkgrel=2
+pkgdesc='pkg-config compatible utility which does not depend on glib (mingw-w64)'
 url='https://github.com/pkgconf/pkgconf'
 arch=('any')
 mingw_arch=('mingw32' 'mingw64' 'ucrt64' 'clang64' 'clang32' 'clangarm64')
 license=('ISC')
-options=('!debug' 'strip')
+options=('!debug' 'strip' 'staticlibs')
 provides=("${MINGW_PACKAGE_PREFIX}-pkg-config")
 conflicts=("${MINGW_PACKAGE_PREFIX}-pkg-config")
 replaces=("${MINGW_PACKAGE_PREFIX}-pkg-config")
-makedepends=("${MINGW_PACKAGE_PREFIX}-meson" "${MINGW_PACKAGE_PREFIX}-cc" "zstd")
+makedepends=("${MINGW_PACKAGE_PREFIX}-meson" "${MINGW_PACKAGE_PREFIX}-cc" "bsdtar" "zstd")
 groups=("${MINGW_PACKAGE_PREFIX}-toolchain")
 source=("https://github.com/pkgconf/pkgconf/archive/refs/tags/$_realname-$pkgver.tar.gz"
         0002-size-t-format.patch
-        0003-printf-format.patch)
+        0003-printf-format.patch
+        0004-escaped-spaces-in-path-names.patch)
 sha256sums=('e8b637c0dd8ae1decbcc95b24b64795cba81a8e3064fddb4424cacef411e59f9'
             '1db5975d6b1db946ba1d71cc3cf390dec567899a89d7ef53f56f24f0058cdbe3'
-            'a7efeef61b4af1c0813d9d8a211cde669a3e3fa2c97ed21e55487667769c567a')
+            '5b73811df7704dcf9c1993d5d912ae1db261df23a5772650aeaf7fbd2732a244'
+            '81eabb5f34242fd2ccf17f96621ebf0ef44b3951565a0083a0d7fcb6740f503d')
 
 prepare() {
   [[ -d "${srcdir}/${_realname}-${pkgver}" ]] && rm -rf "${srcdir}/${_realname}-${pkgver}"
@@ -32,6 +34,7 @@ prepare() {
 
   patch -p1 -i ${srcdir}/0002-size-t-format.patch
   patch -p1 -i ${srcdir}/0003-printf-format.patch
+  patch -p1 -i ${srcdir}/0004-escaped-spaces-in-path-names.patch
 }
 
 build() {
