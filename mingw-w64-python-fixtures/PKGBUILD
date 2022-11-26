@@ -16,7 +16,7 @@ license=('Apache')
 depends=("${MINGW_PACKAGE_PREFIX}-python"
          "${MINGW_PACKAGE_PREFIX}-python-pbr"
          "${MINGW_PACKAGE_PREFIX}-python-six"
-          "${MINGW_PACKAGE_PREFIX}-python-testtools")
+         "${MINGW_PACKAGE_PREFIX}-python-testtools")
 makedepends=("${MINGW_PACKAGE_PREFIX}-python-setuptools")
 checkdepends=("${MINGW_PACKAGE_PREFIX}-python-subunit"
               "${MINGW_PACKAGE_PREFIX}-python-mock")
